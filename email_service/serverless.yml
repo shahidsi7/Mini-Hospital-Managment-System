@@ -1,14 +1,14 @@
 service: hms-email-service
 
-frameworkVersion: '3'
+frameworkVersion: '>=3'
 
 provider:
   name: aws
   runtime: python3.11
   region: ap-south-1
   environment:
-    EMAIL_FROM: ${env:EMAIL_FROM}
-    EMAIL_PASSWORD: ${env:EMAIL_PASSWORD}
+    EMAIL_FROM: {your-actual-email}
+    EMAIL_PASSWORD: {your-email-app-password}
 
 plugins:
   - serverless-offline
