@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Doctor Dashboard - HMS{% endblock %}
+{% block content %}
+
+<h2>👨‍⚕️ Doctor Dashboard</h2>
+<p style="color:#777; margin-bottom:20px;">Welcome, Dr. {{ user.username }}</p>
+
+<!-- Stats -->
+<div class="stats-row">
+    <div class="stat-card stat-blue">
+        <div class="number">{{ slots.count }}</div>
+        <div class="label">Total Slots</div>
+    </div>
+    <div class="stat-card stat-green">
+        <div class="number">{{ bookings.count }}</div>
+        <div class="label">Appointments</div>
+    </div>
+    <div class="stat-card stat-red">
+        <div class="number">{% with slots|length as total %}{{ total }}{% endwith %}</div>
+        <div class="label">This Week</div>
+    </div>
+</div>
+
+<!-- Add Slot Button -->
+<div style="margin-bottom:20px;">
+    <a href="{% url 'add_slot' %}" class="btn">+ Add Availability Slot</a>
+</div>
+
+<!-- Slots Table -->
+<h3>📅 Your Availability Slots</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for slot in slots %}
+        <tr>
+            <td>{{ slot.date }}</td>
+            <td>{{ slot.start_time }}</td>
+            <td>{{ slot.end_time }}</td>
+            <td>
+                {% if slot.is_booked %}
+                    <span class="badge-booked">● Booked</span>
+                {% else %}
+                    <span class="badge-available">● Available</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if not slot.is_booked %}
+                    <a href="{% url 'delete_slot' slot.id %}" class="btn btn-danger"
+                       onclick="return confirm('Delete this slot?')"
+                       style="font-size:12px; padding:5px 12px;">Delete</a>
+                {% else %}
+                    <span style="color:#aaa; font-size:13px;">—</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="text-align:center; color:#aaa; padding:24px;">
+                No slots added yet. Click "Add Availability Slot" to get started.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Bookings Table -->
+<h3>📋 Upcoming Appointments</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Booked On</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in bookings %}
+        <tr>
+            <td>{{ booking.patient.username }}</td>
+            <td>{{ booking.slot.date }}</td>
+            <td>{{ booking.slot.start_time }} – {{ booking.slot.end_time }}</td>
+            <td style="color:#888; font-size:13px;">{{ booking.created_at|date:"M d, Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" style="text-align:center; color:#aaa; padding:24px;">
+                No appointments booked yet.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

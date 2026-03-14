@@ -1,0 +1,20 @@
+/* Additional global styles for HMS */
+/* Most styles are in base.html for simplicity */
+
+body {
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Make Django form inputs look consistent */
+input, select, textarea {
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Django's generated <ul> error lists */
+ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    color: #e53935;
+    font-size: 12px;
+}

@@ -1,0 +1,28 @@
+service: hms-email-service
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.11
+  region: ap-south-1
+  environment:
+    EMAIL_FROM: ${env:EMAIL_FROM}
+    EMAIL_PASSWORD: ${env:EMAIL_PASSWORD}
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    host: localhost
+
+functions:
+  sendEmail:
+    handler: handler.send_notification
+    events:
+      - http:
+          path: /send-email
+          method: post
+          cors: true

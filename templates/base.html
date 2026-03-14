@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HMS - Hospital Management System{% endblock %}</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f8; color: #333; }
+
+        /* Navbar */
+        nav {
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            padding: 14px 32px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        nav .brand { font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+        nav .nav-links a {
+            color: white; text-decoration: none;
+            margin-left: 20px; font-size: 14px;
+            padding: 6px 14px; border-radius: 20px;
+            transition: background 0.2s;
+        }
+        nav .nav-links a:hover { background: rgba(255,255,255,0.2); }
+        nav .user-info { font-size: 13px; opacity: 0.85; margin-right: 10px; }
+
+        /* Container */
+        .container {
+            max-width: 960px; margin: 36px auto;
+            padding: 32px; background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        /* Headings */
+        h2 { color: #1a73e8; margin-bottom: 20px; font-size: 22px; }
+        h3 { color: #444; margin: 24px 0 12px; font-size: 17px; }
+
+        /* Buttons */
+        .btn {
+            display: inline-block; padding: 9px 20px;
+            background: #1a73e8; color: white;
+            border-radius: 6px; text-decoration: none;
+            border: none; cursor: pointer; font-size: 14px;
+            transition: background 0.2s; font-weight: 500;
+        }
+        .btn:hover { background: #1558b0; }
+        .btn-danger { background: #e53935; }
+        .btn-danger:hover { background: #b71c1c; }
+        .btn-outline {
+            background: white; color: #1a73e8;
+            border: 2px solid #1a73e8;
+        }
+        .btn-outline:hover { background: #e8f0fe; }
+
+        /* Messages */
+        .messages { padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; }
+        .messages.success { background: #e8f5e9; border-left: 4px solid #4caf50; color: #2e7d32; }
+        .messages.error { background: #ffebee; border-left: 4px solid #e53935; color: #c62828; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th {
+            background: #e8f0fe; color: #1a73e8;
+            padding: 11px 14px; text-align: left;
+            font-size: 13px; text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+        tr:hover td { background: #fafafa; }
+        .badge-available { color: #2e7d32; font-weight: 600; }
+        .badge-booked { color: #c62828; font-weight: 600; }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 5px; }
+        input[type="text"], input[type="email"], input[type="password"],
+        input[type="date"], input[type="time"], select {
+            width: 100%; padding: 10px 14px;
+            border: 1px solid #ddd; border-radius: 6px;
+            font-size: 14px; transition: border 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none; border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
+        }
+        .form-help { font-size: 12px; color: #888; margin-top: 4px; }
+
+        /* Stats cards */
+        .stats-row { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+        .stat-card {
+            flex: 1; min-width: 140px; padding: 20px;
+            border-radius: 10px; text-align: center;
+        }
+        .stat-card .number { font-size: 32px; font-weight: 700; }
+        .stat-card .label { font-size: 13px; margin-top: 4px; opacity: 0.8; }
+        .stat-blue { background: #e8f0fe; color: #1a73e8; }
+        .stat-green { background: #e8f5e9; color: #2e7d32; }
+        .stat-red { background: #ffebee; color: #c62828; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="brand">🏥 HMS</span>
+    <div style="display:flex; align-items:center;">
+        {% if user.is_authenticated %}
+            <span class="user-info">👤 {{ user.username }} &nbsp;|&nbsp; {{ user.role|capfirst }}</span>
+            <div class="nav-links">
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+        {% else %}
+            <div class="nav-links">
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Sign Up</a>
+            </div>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container">
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="messages {% if msg.tags %}{{ msg.tags }}{% else %}success{% endif %}">
+                {{ msg }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

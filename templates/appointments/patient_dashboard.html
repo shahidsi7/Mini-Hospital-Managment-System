@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Patient Dashboard - HMS{% endblock %}
+{% block content %}
+
+<h2>🧑‍💼 Patient Dashboard</h2>
+<p style="color:#777; margin-bottom:20px;">Welcome, {{ user.username }}</p>
+
+<!-- Stats -->
+<div class="stats-row">
+    <div class="stat-card stat-blue">
+        <div class="number">{{ available_slots.count }}</div>
+        <div class="label">Available Slots</div>
+    </div>
+    <div class="stat-card stat-green">
+        <div class="number">{{ my_bookings.count }}</div>
+        <div class="label">My Bookings</div>
+    </div>
+</div>
+
+<!-- Available Slots -->
+<h3>🗓️ Available Appointments</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for slot in available_slots %}
+        <tr>
+            <td><strong>Dr. {{ slot.doctor.username }}</strong></td>
+            <td>{{ slot.date }}</td>
+            <td>{{ slot.start_time }}</td>
+            <td>{{ slot.end_time }}</td>
+            <td>
+                <a href="{% url 'book_slot' slot.id %}" class="btn" style="font-size:13px; padding:6px 14px;">
+                    Book
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="text-align:center; color:#aaa; padding:24px;">
+                No available slots right now. Please check back later.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- My Bookings -->
+<h3>✅ My Bookings</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Booked On</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in my_bookings %}
+        <tr>
+            <td><strong>Dr. {{ booking.slot.doctor.username }}</strong></td>
+            <td>{{ booking.slot.date }}</td>
+            <td>{{ booking.slot.start_time }} – {{ booking.slot.end_time }}</td>
+            <td style="color:#888; font-size:13px;">{{ booking.created_at|date:"M d, Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" style="text-align:center; color:#aaa; padding:24px;">
+                You haven't booked any appointments yet.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+# Environment variables (NEVER commit this)
+.env
+token.json
+credentials.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+env/
+*.egg-info/
+
+# Django
+*.log
+db.sqlite3
+/static/collected/
+
+# Node / Serverless
+node_modules/
+.serverless/
+.node_repl_history
+
+# OS
+.DS_Store
+Thumbs.db

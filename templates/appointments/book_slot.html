@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Confirm Booking - HMS{% endblock %}
+{% block content %}
+
+<div style="max-width: 480px; margin: 0 auto;">
+    <h2>Confirm Your Appointment</h2>
+    <p style="color:#777; margin-bottom:24px; font-size:14px;">
+        Please review the details before confirming.
+    </p>
+
+    <div style="background:#f8f9fa; border-radius:10px; padding:24px; margin-bottom:24px; border: 1px solid #e0e0e0;">
+        <div style="margin-bottom:14px;">
+            <span style="font-size:12px; color:#888; text-transform:uppercase; letter-spacing:0.5px;">Doctor</span>
+            <p style="font-size:18px; font-weight:600; color:#333; margin-top:2px;">Dr. {{ slot.doctor.username }}</p>
+        </div>
+        <div style="margin-bottom:14px;">
+            <span style="font-size:12px; color:#888; text-transform:uppercase; letter-spacing:0.5px;">Date</span>
+            <p style="font-size:16px; font-weight:600; color:#333; margin-top:2px;">{{ slot.date }}</p>
+        </div>
+        <div>
+            <span style="font-size:12px; color:#888; text-transform:uppercase; letter-spacing:0.5px;">Time</span>
+            <p style="font-size:16px; font-weight:600; color:#333; margin-top:2px;">{{ slot.start_time }} – {{ slot.end_time }}</p>
+        </div>
+    </div>
+
+    <div style="background:#e8f5e9; border-radius:8px; padding:12px 16px; margin-bottom:24px; font-size:13px; color:#2e7d32;">
+        ✉️ A confirmation email will be sent to you and the doctor.
+        📅 A Google Calendar event will be created automatically.
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div style="display:flex; gap:12px;">
+            <button type="submit" class="btn" style="flex:1; padding:12px; font-size:15px;">
+                ✔ Confirm Booking
+            </button>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline" style="flex:1; padding:12px; text-align:center;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
